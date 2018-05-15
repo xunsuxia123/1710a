@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jk.dao.NewDao" >
+
+    <select id="queryNews" resultType="com.jk.model.News">
+        select * from news
+    </select>
+
+    <delete id="deleteNews" parameterType="Integer">
+        delete from news where newsid=#{newsid}
+    </delete>
+
+    <insert id="addNews" parameterType="com.jk.model.News">
+        insert into news values(#{newsid},#{newsname},#{newsintr})
+    </insert>
+
+    <select id="queryByIdNews" parameterType="Integer" resultType="com.jk.model.News">
+        select * from news where newsid=#{newsid}
+    </select>
+
+    <update id="updateNews" parameterType="com.jk.model.News">
+        update news set newsname=#{newsname},newsintr=#{newsintr} where newsid=#{newsid}
+    </update>
+
+</mapper>
