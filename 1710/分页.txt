@@ -1,0 +1,58 @@
+	
+	//分页
+	public JSONObject queryliuyan(String liuname, Integer page, Integer rows) {
+		JSONObject json=new JSONObject();
+		String hql="from  LiuYan where 1=1 ";
+		String hqlcount=" select count(*) from LiuYan where 1=1";
+		if(liuname!=null & !"".equals(liuname)){
+			 hql +="and liuname like '%"+liuname+"%'";
+			 hqlcount +=" and liuname like '%"+liuname+"%'";
+		}
+		Integer stuCount= LiuYanDao.stucount(hqlcount);		
+		
+		List stuList = LiuYanDao.selectStuList(hql,(page-1)*rows,rows);
+		json.put("total", stuCount);
+		json.put("rows", stuList);
+		return json;
+	   }
+
+
+		public Integer stucount(String hqlcount) {
+		Long result = (Long) sessionFactory.getCurrentSession().createQuery(hqlcount).uniqueResult();
+		return Integer.parseInt(""+result);
+	}
+
+
+	/* (non-Javadoc)    
+	 * @see com.jk.dao.ILiuYanDao#selectStuList(java.lang.String, java.lang.Integer)    
+	 */
+	public List selectStuList(String hql,Integer page, Integer rows) {
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+		query.setFirstResult(page);
+		query.setMaxResults(rows);
+		return query.list();
+	}
+
+
+	//弹框
+	操作提示框
+	$.messager.confirm('确认对话框', '您想确定要回复吗？', function(r){
+					if (r){
+					    // 退出操作;
+				
+				}
+				}); 
+	延时提示框
+	$.messager.show({
+	   	title:'删除完成',
+	   	msg:'消息将在3秒后关闭。',
+	   	timeout:3000,//毫秒值
+	   	showType:'slide'
+	});
+
+	//设置全局变量
+	HttpSession session = ServletActionContext.getRequest().getSession();
+	session.setAttribute("userid",us.getUserid());
+	Integer attribute = (Integer) session.getAttribute("userid");
+	session.removeAttribute("userid");
+
